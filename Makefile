@@ -28,7 +28,7 @@ lint: $(RTL_SRCS) $(TB_ALU)
 lint-rtl: $(RTL_SRCS)
 	$(VERILATOR) --lint-only --sv --assert $(RTL_SRCS)
 
-# Simulate SV with Verilator
+# Simulate a single specified tb
 sim: lint $(RTL_SRCS) $(TB_SRCS)
 ifndef TOP
 	$(error [MAKE ERROR]: TOP is not set. Usage: make sim TOP=top_module (no.sv suffix))
@@ -39,6 +39,20 @@ endif
 		--top-module $(TOP) \
 		$(RTL_SRCS) $(TB_SRCS)
 	$(SIM_DIR)/V$(TOP)
+
+# Simulates a single specified tb, dump traces, open in GTKWave
+sim-wave: lint $(RTL_SRCS) $(TB_SRCS)
+ifndef TOP
+	$(error [MAKE ERROR]: TOP is not set. Usage: make sim-wave TOP=top_module (no.sv suffix))
+endif
+	mkdir -p $(SIM_DIR)
+	$(VERILATOR) --binary --sv --assert \
+		--trace-fst \
+		-Mdir $(SIM_DIR) \
+		--top-module $(TOP) \
+		$(RTL_SRCS) $(TB_SRCS)
+	$(SIM_DIR)/V$(TOP)
+	gtkwave $(SIM_DIR)/$(TOP).fst
 
 # Clean up
 clean:

@@ -20,7 +20,9 @@ alu dut(
 
 initial begin
     $display("Starting ALU Testbench");
-    
+    $dumpfile($sformatf("sim/%m.fst")); // sets dumpfile name to current module name (%m)
+    $dumpvars(0);
+
     // Test ADD
     in_op = ALU_ADD;
 
