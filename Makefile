@@ -11,18 +11,21 @@ SIM_DIR   = sim
 
 # Sources
 PKG       = $(RTL_DIR)/common/brick_pkg.sv
+FIFO      = $(RTL_DIR)/common/fifo.sv
 ALU       = $(RTL_DIR)/execute/alu.sv
 
-RTL_SRCS  = $(PKG) $(ALU)
+
+RTL_SRCS  = $(PKG) $(ALU) $(FIFO)
 
 # Testbenches
 TB_ALU    = $(TB_DIR)/execute/alu_tb.sv
+TB_FIFO   = $(TB_DIR)/common/fifo_tb.sv
 
-TB_SRCS   = $(TB_ALU)
+TB_SRCS   = $(TB_ALU) $(TB_FIFO)
 
 # Lint SV code and testbenches with Verilator
 lint: $(RTL_SRCS) $(TB_ALU)
-	$(VERILATOR) --lint-only --sv --assert $(RTL_SRCS) $(TB_ALU)
+	$(VERILATOR) --lint-only --sv --assert -Wno-MULTITOP $(RTL_SRCS) $(TB_SRCS)
 
 # Lint SV code only with Verilator
 lint-rtl: $(RTL_SRCS)
@@ -36,6 +39,7 @@ endif
 	mkdir -p $(SIM_DIR)
 	$(VERILATOR) --binary --sv --assert \
 		-Mdir $(SIM_DIR) \
+		--trace-fst\
 		--top-module $(TOP) \
 		$(RTL_SRCS) $(TB_SRCS)
 	$(SIM_DIR)/V$(TOP)
