@@ -1,0 +1,18 @@
+# Verilator output
+sim/
+
+# Yosys output
+syn/
+
+# VS Code
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Waveforms
+*.vcd
+*.fst
