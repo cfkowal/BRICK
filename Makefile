@@ -65,8 +65,7 @@ endif
 		-Mdir $(SIM_DIR) \
 		--top-module $(TOP) \
 		$(RTL_SRCS) $(TB_SRCS)
-	$(SIM_DIR)/V$(TOP)
-	$(WAVE_VIEWER) $(SIM_DIR)/$(TOP).fst
+	$(SIM_DIR)/V$(TOP); $(WAVE_VIEWER) $(SIM_DIR)/$(TOP).fst
 
 # Clean up
 clean:
