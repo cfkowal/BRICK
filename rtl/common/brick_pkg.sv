@@ -5,6 +5,7 @@ package brick_pkg;
 
 // Parameters
 parameter XLEN = 32; // standard RV32 word len
+parameter PRF_SIZE = 256; // Physical Register File size
 
 // Definitions
 typedef logic [XLEN - 1 : 0] word_t; 
